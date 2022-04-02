@@ -71,6 +71,8 @@ struct SearchView: View {
     
     var body: some View {
         
+        var currentChosed: String = ""
+        
         GeometryReader{proxy in
             let width = proxy.size.width
             let height = proxy.size.width
@@ -88,11 +90,12 @@ struct SearchView: View {
                 SearchBar(text: $searchText)
                         .padding(.top,-10)
                 
-                List(totalRoom.filter({ searchText.isEmpty ? true : ($0.contains(searchText)||keyDict[$0]!.contains(searchText)) }), id: \.self){  item in
+                List(totalRoom.filter({ searchText.isEmpty ? false : ($0.contains(searchText)||keyDict[$0]!.contains(searchText)) }), id: \.self){  item in
                     
                     
                     Button {
                         self.newViewPresented = true
+                        currentChosed =  item
                     } label: {
                         HStack{
                             Image(item)
@@ -133,7 +136,7 @@ struct SearchView: View {
                             .stroke(Color.gray, lineWidth: 2)
                         )
                     }.sheet(isPresented: $newViewPresented) {
-                        RoomInfoVIew(roomNum: item, keyWord: keyDict[item]!, description: descriptionDict[item]!)
+                        RoomInfoVIew(roomNum: currentChosed, keyWord: keyDict[currentChosed]!, description: descriptionDict[currentChosed]!)
                     }
                     .padding()
 
