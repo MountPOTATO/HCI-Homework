@@ -69,9 +69,18 @@ struct SearchView: View {
     
     @State private var newViewPresented = false
     
+    func foundKeyWord(_ keyWord:String)->Bool {
+        for i in keyDict[keyWord]!{
+            if i.contains(keyWord){
+                return true
+            }
+        }
+        return false
+    }
+    
     var body: some View {
         
-        var currentChosed: String = ""
+//        var currentChosed: String = ""
         
         GeometryReader{proxy in
             let width = proxy.size.width
@@ -90,12 +99,11 @@ struct SearchView: View {
                 SearchBar(text: $searchText)
                         .padding(.top,-10)
                 
-                List(totalRoom.filter({ searchText.isEmpty ? false : ($0.contains(searchText)||keyDict[$0]!.contains(searchText)) }), id: \.self){  item in
+                List(totalRoom.filter({ searchText.isEmpty ? false : ($0.contains(searchText)||foundKeyWord($0)) }), id: \.self){  item in
                     
                     
                     Button {
                         self.newViewPresented = true
-                        currentChosed =  item
                     } label: {
                         HStack{
                             Image(item)
@@ -136,7 +144,7 @@ struct SearchView: View {
                             .stroke(Color.gray, lineWidth: 2)
                         )
                     }.sheet(isPresented: $newViewPresented) {
-                        RoomInfoVIew(roomNum: currentChosed, keyWord: keyDict[currentChosed]!, description: descriptionDict[currentChosed]!)
+                        RoomInfoVIew(roomNum: item, keyWord: keyDict[item]!, description: descriptionDict[item]!)
                     }
                     .padding()
 
