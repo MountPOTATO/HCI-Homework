@@ -14,6 +14,10 @@ import socket
 import difflib
 
 
+ERROR=-1
+UNCLEAR=-2
+MUSIC=0
+FILE=1
 
 def isNetConnected():
     try:
@@ -29,12 +33,12 @@ def string_similar(s1, s2):
 
 
 class ThreadASR(QThread):
-    voiceSignal = pyqtSignal(str)
+    voiceSignal = pyqtSignal(int,str)
     finishSignal = pyqtSignal()
 
     def __init__(self):
         super().__init__()
-        self.available_commands=['play music','open notepad','change']
+        self.available_commands=['play music','open file']
 
     def getASR(self):
         try:
@@ -45,34 +49,53 @@ class ThreadASR(QThread):
                 r.adjust_for_ambient_noise(source)
                 audio = r.listen(source)
 
-            result=""
             if isNetConnected():
                 result=r.recognize_google(audio)
+                if result=="":
+                    raise sr.UnknownValueError
                 return None, result
             else:
                 result=r.recognize_sphinx(audio)
+                if result=="":
+                    raise sr.UnknownValueError
                 return None, result
         except sr.HTTPError:
-                return "Network connection error",None
+                return "Network connection error, returning in 2s...",None
         except sr.WaitTimeoutError:
-                return "Response Timeout",None
+                return "Response Timeout,returning in 2s...",None
         except sr.RequestError:
-                return "There's something wrong with sphinx",None
+                return "There's something wrong with sphinx,returning in 2s...",None
         except sr.UnknownValueError:
-                return "Sphinx can't recognize this audio",None
+                return "Sphinx can't recognize this audio,returning in 2s...",None
 
     def run(self):
         while True:
             result=self.getASR()
             if result[0]:
-                self.voiceSignal.emit(result[0])
+                # error message inform
+                self.voiceSignal.emit(ERROR,result[0])
                 time.sleep(2)
                 self.finishSignal.emit()
                 continue
-            print(result)
-            self.voiceSignal.emit(result[1])
-            time.sleep(2)
-            self.finishSignal.emit()
+            else:
+                # sending sr result
+                # self.voiceSignal.emit(result[1])
+                command_rate_list=[string_similar(result[1],i) for i in self.available_commands]
+                command_max_rate=max(command_rate_list)
+                command_idx=-1 if command_max_rate<0.1 else command_rate_list.index(command_max_rate)
+                if command_idx ==MUSIC:
+                    self.voiceSignal.emit(MUSIC,result[1])
+                    os.system("open resources/f1lcapae.wav")
+                elif command_idx == FILE:
+                    self.voiceSignal.emit(FILE, result[1])
+                    os.system("open resources/text.txt")
+                else:
+                    self.voiceSignal.emit(UNCLEAR, result[1])
+                time.sleep(2)
+                self.finishSignal.emit()
+
+
+
 
 
 

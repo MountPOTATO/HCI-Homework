@@ -20,8 +20,8 @@ class myWindow(QtWidgets.QMainWindow):
         self.asrThread.finishSignal.connect(self.responseFinishSignal)
         self.asrThread.start()
 
-    def responseVoiceSignal(self,context):
-        self.ui.responseToVoiceThread(context)
+    def responseVoiceSignal(self,CODE,context):
+        self.ui.responseToVoiceThread(CODE,context)
 
     def responseFinishSignal(self):
         self.ui.returnToMainPage()

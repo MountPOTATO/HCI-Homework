@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QMovie
+from asrThread import ERROR,UNCLEAR,MUSIC,FILE
 
 class ASR_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -30,7 +31,7 @@ class ASR_MainWindow(object):
 
         # how can i help
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(70, 160, 161, 21))
+        self.label.setGeometry(QtCore.QRect(70, 160, 200, 42))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(14)
@@ -83,13 +84,27 @@ class ASR_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def responseToVoiceThread(self,voiceText):
+    def responseToVoiceThread(self,CODE,voiceText):
         """
         the change of view when a voice command is raised
         """
         _translate = QtCore.QCoreApplication.translate
-        self.label.setText(_translate("MainWindow", voiceText))
-        #TODO: Label 2 的设定
+
+        if CODE==ERROR:
+            self.label.setText(_translate("MainWindow", voiceText))
+            self.label_2.hide()
+        elif CODE==UNCLEAR:
+            self.label.setText(_translate("MainWindow", voiceText))
+            self.label_2.setText(_translate("MainWindow", "Sorry, I couldn't understand your command, returning in "
+                                                          "2s..."))
+        elif CODE==MUSIC:
+            self.label.setText(_translate("MainWindow", voiceText))
+            self.label_2.setText(_translate("MainWindow", "Opening the music file..."))
+        elif CODE==FILE:
+            self.label.setText(_translate("MainWindow", voiceText))
+            self.label_2.setText(_translate("MainWindow", "Opening the txt file..."))
+        else:
+            pass
 
         self.label_3.hide()
         self.label_4.hide()
@@ -102,6 +117,7 @@ class ASR_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         self.label.setText(_translate("MainWindow", "Hi! How can I help?"))
         self.label_2.setText(_translate("MainWindow", "You can:"))
+        self.label_2.show()
         self.label_3.show()
         self.label_4.show()
 
