@@ -9,31 +9,16 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QMovie
 
-class Ui_MainWindow(object):
+class ASR_MainWindow(object):
     def setupUi(self, MainWindow):
+        # Main Window
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(314, 462)
+        MainWindow.resize(314, 580)
         MainWindow.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(60, 280, 201, 51))
-        font = QtGui.QFont()
-        font.setFamily("Calibri")
-        font.setPointSize(14)
-        self.label_3.setFont(font)
-        self.label_3.setStyleSheet("color: rgb(0, 117, 210);")
-        self.label_3.setWordWrap(True)
-        self.label_3.setObjectName("label_3")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(60, 250, 201, 21))
-        font = QtGui.QFont()
-        font.setFamily("Calibri")
-        font.setPointSize(14)
-        self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color: rgb(0, 117, 210);")
-        self.label_2.setWordWrap(True)
-        self.label_2.setObjectName("label_2")
+
+        # siri gif
         self.voiceFig = QtWidgets.QLabel(self.centralwidget)
         self.voiceFig.setGeometry(QtCore.QRect(70, 50, 161, 121))
         self.voiceFig.setText("")
@@ -43,6 +28,7 @@ class Ui_MainWindow(object):
         self.voiceFig.setScaledContents(True)
         self.voiceFig.setObjectName("voiceFig")
 
+        # how can i help
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(70, 160, 161, 21))
         font = QtGui.QFont()
@@ -54,6 +40,30 @@ class Ui_MainWindow(object):
         self.label.setTextFormat(QtCore.Qt.AutoText)
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
+
+        # You can
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(60, 250, 201, 21))
+        self.label_2.setFont(font)
+        self.label_2.setStyleSheet("color: rgb(0, 117, 210);")
+        self.label_2.setWordWrap(True)
+        self.label_2.setObjectName("label_2")
+
+        # Enjoy music
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(60, 280, 201, 51))
+        self.label_3.setFont(font)
+        self.label_3.setStyleSheet("color: rgb(0, 117, 210);")
+        self.label_3.setWordWrap(True)
+        self.label_3.setObjectName("label_3")
+
+        # Open Notepad
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setGeometry(QtCore.QRect(60, 330, 201, 51))
         font = QtGui.QFont()
@@ -63,6 +73,8 @@ class Ui_MainWindow(object):
         self.label_4.setStyleSheet("color: rgb(0, 117, 210);")
         self.label_4.setWordWrap(True)
         self.label_4.setObjectName("label_4")
+
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -71,11 +83,34 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    def responseToVoiceThread(self,voiceText):
+        """
+        the change of view when a voice command is raised
+        """
+        _translate = QtCore.QCoreApplication.translate
+        self.label.setText(_translate("MainWindow", voiceText))
+        #TODO: Label 2 的设定
+
+        self.label_3.hide()
+        self.label_4.hide()
+
+
+    def returnToMainPage(self):
+        """
+        the change of view when command execution is finished
+        """
+        _translate = QtCore.QCoreApplication.translate
+        self.label.setText(_translate("MainWindow", "Hi! How can I help?"))
+        self.label_2.setText(_translate("MainWindow", "You can:"))
+        self.label_3.show()
+        self.label_4.show()
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Voice Assistant"))
-        self.label_3.setText(_translate("MainWindow", "1. Enjoy music by saying \"Play music\""))
-        self.label_2.setText(_translate("MainWindow", "You can:"))
         self.label.setText(_translate("MainWindow", "Hi! How can I help?"))
+        self.label_2.setText(_translate("MainWindow", "You can:"))
+        self.label_3.setText(_translate("MainWindow", "1. Enjoy music by saying \"Play music\""))
         self.label_4.setText(_translate("MainWindow", "2. Take some notes by saying \"Open Notepad\""))
 
