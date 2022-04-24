@@ -41,9 +41,16 @@ class ThreadASR(QThread):
         self.available_commands=['play music','open file']
 
     def getASR(self):
+
+
         try:
             r = sr.Recognizer()
             mic = sr.Microphone()
+
+            if not isinstance(r, sr.Recognizer):
+                raise TypeError("`recognizer` must be `Recognizer` instance")
+            if not isinstance(mic, sr.Microphone):
+                raise TypeError("`microphone` must be `Microphone` instance")
             # recognize
             with mic as source:
                 r.adjust_for_ambient_noise(source)
@@ -60,13 +67,13 @@ class ThreadASR(QThread):
                     raise sr.UnknownValueError
                 return None, result
         except sr.HTTPError:
-                return "Network connection error, returning in 2s...",None
+            return "Network connection error, returning in 2s...",None
         except sr.WaitTimeoutError:
-                return "Response Timeout,returning in 2s...",None
-        except sr.RequestError:
-                return "There's something wrong with sphinx,returning in 2s...",None
+            return "Response Timeout,returning in 2s...",None
+        except sr.RequestError or TypeError:
+            return "There's something wrong with sphinx,returning in 2s...",None
         except sr.UnknownValueError:
-                return "Sphinx can't recognize this audio,returning in 2s...",None
+            return "Sphinx can't recognize this audio,returning in 2s...",None
 
     def run(self):
         while True:
@@ -82,14 +89,14 @@ class ThreadASR(QThread):
                 # self.voiceSignal.emit(result[1])
                 command_rate_list=[string_similar(result[1],i) for i in self.available_commands]
                 command_max_rate=max(command_rate_list)
-                command_idx=-1 if command_max_rate<0.1 else command_rate_list.index(command_max_rate)
+                command_idx=-1 if command_max_rate<0.4 else command_rate_list.index(command_max_rate)
                 if command_idx ==MUSIC:
                     self.voiceSignal.emit(MUSIC,result[1])
                     os.system("open resources/f1lcapae.wav")
                 elif command_idx == FILE:
                     self.voiceSignal.emit(FILE, result[1])
                     os.system("open resources/text.txt")
-                else:
+                else: #command_idx=-1
                     self.voiceSignal.emit(UNCLEAR, result[1])
                 time.sleep(2)
                 self.finishSignal.emit()

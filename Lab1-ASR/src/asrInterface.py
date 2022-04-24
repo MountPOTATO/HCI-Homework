@@ -23,7 +23,7 @@ class ASR_MainWindow(object):
         self.voiceFig = QtWidgets.QLabel(self.centralwidget)
         self.voiceFig.setGeometry(QtCore.QRect(70, 50, 161, 121))
         self.voiceFig.setText("")
-        self.gif = QMovie("icon/voice.gif")
+        self.gif = QMovie("../icon/play.gif")
         self.voiceFig.setMovie(self.gif)
         self.gif.start()
         self.voiceFig.setScaledContents(True)
@@ -31,7 +31,7 @@ class ASR_MainWindow(object):
 
         # how can i help
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(70, 160, 200, 42))
+        self.label.setGeometry(QtCore.QRect(70, 172, 200, 42))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(14)
@@ -95,8 +95,7 @@ class ASR_MainWindow(object):
             self.label_2.hide()
         elif CODE==UNCLEAR:
             self.label.setText(_translate("MainWindow", voiceText))
-            self.label_2.setText(_translate("MainWindow", "Sorry, I couldn't understand your command, returning in "
-                                                          "2s..."))
+            self.label_2.setText(_translate("MainWindow", "Sorry I don't get it..."))
         elif CODE==MUSIC:
             self.label.setText(_translate("MainWindow", voiceText))
             self.label_2.setText(_translate("MainWindow", "Opening the music file..."))
@@ -125,6 +124,7 @@ class ASR_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Voice Assistant"))
+        self.voiceFig.show()
         self.label.setText(_translate("MainWindow", "Hi! How can I help?"))
         self.label_2.setText(_translate("MainWindow", "You can:"))
         self.label_3.setText(_translate("MainWindow", "1. Enjoy music by saying \"Play music\""))
