@@ -18,6 +18,7 @@ ERROR=-1
 UNCLEAR=-2
 MUSIC=0
 FILE=1
+VIDEO=2
 
 def isNetConnected():
     try:
@@ -38,10 +39,9 @@ class ThreadASR(QThread):
 
     def __init__(self):
         super().__init__()
-        self.available_commands=['play music','open file']
+        self.available_commands=['play music','open file',"play video"]
 
     def getASR(self):
-
 
         try:
             r = sr.Recognizer()
@@ -96,6 +96,9 @@ class ThreadASR(QThread):
                 elif command_idx == FILE:
                     self.voiceSignal.emit(FILE, result[1])
                     os.system("open resources/text.txt")
+                elif command_idx == VIDEO:
+                    self.voiceSignal.emit(VIDEO, result[1])
+                    os.system("open resources/video.mp4")
                 else: #command_idx=-1
                     self.voiceSignal.emit(UNCLEAR, result[1])
                 time.sleep(2)

@@ -75,6 +75,16 @@ class ASR_MainWindow(object):
         self.label_4.setWordWrap(True)
         self.label_4.setObjectName("label_4")
 
+        self.label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.label_5.setGeometry(QtCore.QRect(60, 380, 201, 51))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(14)
+        self.label_5.setFont(font)
+        self.label_5.setStyleSheet("color: rgb(0, 117, 210);")
+        self.label_5.setWordWrap(True)
+        self.label_5.setObjectName("label_5")
+
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -102,11 +112,14 @@ class ASR_MainWindow(object):
         elif CODE==FILE:
             self.label.setText(_translate("MainWindow", voiceText))
             self.label_2.setText(_translate("MainWindow", "Opening the txt file..."))
-        else:
-            pass
+        else: #CODE==VIDEO
+            self.label.setText(_translate("MainWindow", voiceText))
+            self.label_2.setText(_translate("MainWindow", "Opening the video file..."))
+
 
         self.label_3.hide()
         self.label_4.hide()
+        self.label_5.hide()
 
 
     def returnToMainPage(self):
@@ -119,6 +132,7 @@ class ASR_MainWindow(object):
         self.label_2.show()
         self.label_3.show()
         self.label_4.show()
+        self.label_5.show()
 
 
     def retranslateUi(self, MainWindow):
@@ -129,4 +143,5 @@ class ASR_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "You can:"))
         self.label_3.setText(_translate("MainWindow", "1. Enjoy music by saying \"Play music\""))
         self.label_4.setText(_translate("MainWindow", "2. Take some notes by saying \"Open Notepad\""))
+        self.label_5.setText(_translate("MainWindow", "3. Watch an video by saying \"Play Video\""))
 
