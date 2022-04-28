@@ -21,9 +21,9 @@ class ASR_MainWindow(object):
 
         # siri gif
         self.voiceFig = QtWidgets.QLabel(self.centralwidget)
-        self.voiceFig.setGeometry(QtCore.QRect(70, 50, 161, 121))
+        self.voiceFig.setGeometry(QtCore.QRect(70, 30, 161, 121))
         self.voiceFig.setText("")
-        self.gif = QMovie("../icon/play.gif")
+        self.gif = QMovie("../icon/voice.gif")
         self.voiceFig.setMovie(self.gif)
         self.gif.start()
         self.voiceFig.setScaledContents(True)
@@ -31,7 +31,7 @@ class ASR_MainWindow(object):
 
         # how can i help
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(70, 172, 200, 42))
+        self.label.setGeometry(QtCore.QRect(70, 175, 200, 42))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(14)
@@ -64,7 +64,7 @@ class ASR_MainWindow(object):
         self.label_3.setWordWrap(True)
         self.label_3.setObjectName("label_3")
 
-        # Open Notepad
+        # Open file
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setGeometry(QtCore.QRect(60, 330, 201, 51))
         font = QtGui.QFont()
@@ -142,6 +142,6 @@ class ASR_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Hi! How can I help?"))
         self.label_2.setText(_translate("MainWindow", "You can:"))
         self.label_3.setText(_translate("MainWindow", "1. Enjoy music by saying \"Play music\""))
-        self.label_4.setText(_translate("MainWindow", "2. Take some notes by saying \"Open Notepad\""))
+        self.label_4.setText(_translate("MainWindow", "2. Take some notes by saying \"Open file\""))
         self.label_5.setText(_translate("MainWindow", "3. Watch an video by saying \"Play Video\""))
 

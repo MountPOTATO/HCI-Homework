@@ -12,7 +12,6 @@ class myWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
         super(myWindow, self).__init__()
-        self.myCommand = " "
         self.ui = ASR_MainWindow()
         self.ui.setupUi(self)
         self.asrThread=ThreadASR()
