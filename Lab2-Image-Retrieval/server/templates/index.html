@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Retrieval Demo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      
+      html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+      .fa {
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .fa:hover {
+        color: darkblue;
+      }
+    </style>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+    <script src="/static/utils/js/search.js"></script>
+
+    <script type="text/javascript">
+      function showImg(input) {
+        var file = input.files[0];
+        var reader = new FileReader()
+        reader.readAsDataURL(file)
+
+        reader.onload = function (reader) {
+            document.getElementById("previmg").src=reader.target.result;
+            document.getElementById("previmg").style.display="block";
+        }
+      }
+    </script>
+
+    <script type="text/javascript">
+      function changeFavIcon(x) {
+        x.classList.toggle("fa-heartbeat");
+      }
+
+      function dropFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.className.indexOf("w3-show") == -1) {
+          x.className += " w3-show";
+        } else {
+          x.className = x.className.replace(" w3-show", "");
+        }
+      }
+
+    </script>
+
+      
+
+
+</head>
+
+
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right">Logo</span>
+</div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:30px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-image"></i> Image Retrieval</b></h5>
+  </header>
+
+
+
+
+  <div class=" w3-margin-bottom w3-row-padding ">
+    <form method=post action="/" enctype=multipart/form-data name="form" id="form">
+      <button class="w3-quarter" type="button">
+        <div class="w3-container w3-red w3-padding-16">
+          <label class="custome-file-upload">
+              <input type="file" id="file" name="file" accept=".jpg,.png,.jpeg"  onchange="showImg(this)" hidden/>
+              <i class="fa fa-upload w3-xxxlarge"></i>
+              <div class="w3-clear"></div>
+              <h4>Upload Image</h4>
+          </label>
+        </div>
+      </button>
+      <button class="w3-quarter" type="button" onclick="search()">
+        <div class="w3-container w3-blue w3-padding-16">
+          <i class="fa fa-search w3-xxxlarge"></i>
+          <div class="w3-clear"></div>
+          <h4>Search</h4>
+        </div>
+      </button>
+      <button class="w3-quarter" type="button" onclick="document.getElementById('favor-modal').style.display='block'">
+        <div class="w3-container w3-teal w3-padding-16">
+          <i class="fa fa-heart w3-xxxlarge"></i>
+          <div class="w3-clear"></div>
+          <h4>Favorites</h4>
+        </div>
+      </button>
+
+      <!-- W3.css modal 弹出窗 -->
+      <div id="favor-modal" class="w3-modal">
+        <div class="w3-modal-content w3-card-4">
+          <header class="w3-container w3-teal"> 
+            <span onclick="document.getElementById('favor-modal').style.display='none'" 
+            class="w3-button w3-display-topright">&times;</span>
+            <h2>My Favorites</h2>
+          </header>
+          <div class="w3-container">
+            <p>Some text..</p>
+            <p>Some text..</p>
+          </div>
+          <footer class="w3-container w3-teal">
+          </footer>
+        </div>
+      </div>
+    </form>
+
+
+    <div class="w3-quarter">
+       <img id="gif" src="../static/images/ajax-loader.gif" style="height:50%;width:50%;display: block;" >
+    </div>
+  </div>
+
+
+  <div class="w3-panel">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-third">
+        <h5>Preview</h5>
+        <img src="" id="previmg" style="width:100%" alt=""">
+      </div>
+
+      
+
+      <div class="w3-twothird">
+        <h5>Search Result</h5>
+
+        <div id="search-results" name="search-results" style="display:none;">
+
+          <div class="w3-left" style="margin-left:2%;">
+            <button class="w3-button w3-teal w3-round-large">
+              <div class="w3-left">
+                <i class="fa fa-times-circle w3-xlarge "> Clear </i>
+              </div>
+            </button>
+          </div>
+          <div class="w3-right" style="margin-left:2%">
+            <div class="w3-dropdown-click" style="margin-right:2%">
+              <button class="w3-button w3-black  w3-teal w3-round-large" onclick="dropFunction()">
+                <i class="fa fa-filter w3-xlarge "> Filter </i>
+              </button>
+              <div class="w3-dropdown-content w3-bar-block w3-card w3-light-grey" id="myDIV">
+                <a class="w3-bar-item w3-button" href="#about">About</a>
+                <a class="w3-bar-item w3-button" href="#base">Base</a>
+                <a class="w3-bar-item w3-button" href="#blog">Blog</a>
+                <a class="w3-bar-item w3-button" href="#contact">Contact</a>
+                <a class="w3-bar-item w3-button" href="#custom">Custom</a>
+                <a class="w3-bar-item w3-button" href="#support">Support</a>
+                <a class="w3-bar-item w3-button" href="#tools">Tools</a>
+              </div>
+            </div>
+          </div>
+            
+
+          
+          <br>
+          <br>
+          <br>
+          <br>
+
+
+          <div class="show-result" >
+
+            <div class="w3-card-4 w3-left" id="imgcard0" style="width:45%;margin-bottom:3%;margin-left:2%">
+              <img id="img0" style="width:100%;"  src="/server/static/images/predict.png"  >
+              <div class="w3-container w3-center">
+                <div class="w3-left" style="margin-left:1px;">
+                  <div class="w3-tag w3-round w3-green" style="padding:1px">
+                    <div class="w3-tag w3-round w3-green w3-border w3-border-white">
+                      predict
+                    </div>
+                  </div>
+                </div>
+                <div class="w3-right" >
+                  <i onclick="changeFavIcon(this)" class="fa fa-heart-o"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="w3-card-4 w3-right" id="imgcard1" style="width:45%;margin-bottom:3%;margin-right: 2%;">
+              <img id="img1" style="width:100%;"  src="/server/static/images/predict.png"  >
+              <div class="w3-container w3-center">
+                <div class="w3-left" style="margin-left:1px;">
+                  <div class="w3-tag w3-round w3-green" style="padding:1px">
+                    <div class="w3-tag w3-round w3-green w3-border w3-border-white">
+                      predict
+                    </div>
+                  </div>
+                </div>
+                <div class="w3-right" >
+                  <i onclick="changeFavIcon(this)" class="fa fa-heart-o"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="w3-card-4 w3-left" id="imgcard2" style="width:45%;margin-bottom:3%;margin-left:2%">
+              <img id="img2" style="width:100%;"  src="/server/static/images/predict.png"  >
+              <div class="w3-container w3-center">
+                <div class="w3-left" style="margin-left:1px;">
+                  <div class="w3-tag w3-round w3-green" style="padding:1px">
+                    <div class="w3-tag w3-round w3-green w3-border w3-border-white">
+                      predict
+                    </div>
+                  </div>
+                </div>
+                <div class="w3-right" >
+                  <i onclick="changeFavIcon(this)" class="fa fa-heart-o"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="w3-card-4 w3-right" id="imgcard3" style="width:45%;margin-bottom:3%;margin-right: 2%;">
+              <img id="img3" style="width:100%;"  src="/server/static/images/predict.png"  >
+              <div class="w3-container w3-center">
+                <div class="w3-left" style="margin-left:1px;">
+                  <div class="w3-tag w3-round w3-green" style="padding:1px">
+                    <div class="w3-tag w3-round w3-green w3-border w3-border-white">
+                      {{tag3}}
+                    </div>
+                  </div>
+                </div>
+                <div class="w3-right" ">
+                  <i onclick="changeFavIcon(this)" class="fa fa-heart-o"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="w3-card-4 w3-left" id="imgcard4" style="width:45%;margin-bottom:3%;margin-left:2%">
+              <img id="img4" style="width:100%;"  src="/server/static/images/predict.png"  >
+              <div class="w3-container w3-center">
+                <div class="w3-left" style="margin-left:1px;">
+                  <div class="w3-tag w3-round w3-green" style="padding:1px">
+                    <div class="w3-tag w3-round w3-green w3-border w3-border-white">
+                      predict
+                    </div>
+                  </div>
+                </div>
+                <div class="w3-right" >
+                  <i onclick="changeFavIcon(this)" class="fa fa-heart-o"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="w3-card-4 w3-right" id="imgcard5" style="width:45%;margin-bottom:3%;margin-right: 2%;">
+              <img id="img5" style="width:100%;"  src="/server/static/images/predict.png"  >
+              <div class="w3-container w3-center">
+                <div class="w3-left" style="margin-left:1px;">
+                  <div class="w3-tag w3-round w3-green" style="padding:1px">
+                    <div class="w3-tag w3-round w3-green w3-border w3-border-white">
+                      {{tag3}}
+                    </div>
+                  </div>
+                </div>
+                <div class="w3-right" ">
+                  <i onclick="changeFavIcon(this)" class="fa fa-heart-o"></i>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          
+
+          
+
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
