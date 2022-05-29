@@ -35,10 +35,11 @@ category_list = df['Category'].unique()
 type_list = ['Free', 'Paid']
 rating_list = df['Content Rating'].unique()
 
+
 app.layout = html.Div([
 
     html.Div([
-        div_graph('rating-graph', pie_css),
+        div_non_animate_graph('rating-graph', pie_css),
 
         div_dropdown('Category', category_list, dropdown_css),
 
@@ -175,7 +176,7 @@ def refresh_install_rating_bar(category, type, radio):
         dash.dependencies.Input('rating-radio', 'value')
     ]
 )
-def update_RI_scatters(category, type, radio):
+def refresh_rating_review_bar(category, type, radio):
     dff = df[(df['Category'] == category) & (df['Content Rating'] == radio) & (df['Type'] == type)]
 
     reviews = [0, 0, 0, 0, 0, 0]

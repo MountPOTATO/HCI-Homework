@@ -22,6 +22,16 @@ def div_dropdown(title, content_list, style):
     )
 
 
+def div_non_animate_graph(title, style):
+    return html.Div(
+        [
+            dcc.Graph(
+                id=title,
+            )
+        ],
+        style=style
+    )
+
 def div_graph(title, style):
     return html.Div(
         [
